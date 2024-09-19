@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | E-Commerce</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-md">
+      <div class="bg-white shadow-md rounded-lg px-8 py-10">
+        <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6">Welcome Back!</h2>
+        <form action="/login" method="post">
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+            <input type="email" name="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your email">
+          </div>
+          <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <input type="password" name="password" id="password" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Enter your password">
+          </div>
+          <div class="mb-6">
+            <button type="submit" name="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-700 focus:outline-none">Login</button>
+          </div>
+          <p class="text-sm text-center text-gray-600">
+            Don't have an account? 
+            <a href="/" class="text-indigo-600 hover:text-indigo-800">Register here</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

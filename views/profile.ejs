@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | E-Commerce</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+</head>
+<body class="bg-gray-100">
+  
+  <!-- Navbar -->
+  <nav class="bg-white h-10 shadow-md py-4">
+    <div class="container mx-auto flex justify-between items-center px-6">
+      <!-- Website Logo -->
+      <div class="flex items-center">
+        <img src="../logo.jpg" alt="Website Logo" class="h-10 w-10">
+        <span class="text-2xl font-semibold text-gray-800 ml-2">Apna store</span>
+      </div>
+
+      <!-- My Cart and Profile Buttons -->
+      <div class="flex items-center">
+        <a href="/cart" class="bg-indigo-600 h-8 text-sm text-white py-1 px-1 rounded-md shadow hover:bg-indigo-700">My Cart</a>
+        <a href="/profile" class="ml-4">
+            <i class="ri-account-circle-fill"></i> 
+        </a>
+        <a href="/logout" class="ml-4 text-sm text-red-400">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="bg-white shadow-md py-4">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-3xl font-bold text-gray-800"></h1>
+    </div>
+  </header>
+
+  <!-- Product List -->
+  <div class="container mx-auto px-6 py-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      
+      <!-- Product Item 1 -->
+      
+         <% products.forEach(function(product){ %>
+
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+          <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="Product 1" class="w-full h-48 object-cover">
+          <div class="p-4">
+            <h3 class="text-lg font-semibold text-gray-800"><%= product.name %></h3>
+            <p class="text-sm text-gray-600 mt-1"><%= product.description %></p>
+            <div class="mt-2">
+              <span class="text-indigo-600 font-bold text-lg">$<%= product.price %></span>
+            </div>
+            <div class="mt-4 flex space-x-4">
+              <form action="" method="post">
+                 <a href="/shop" class="w-auto h-12 text-sm bg-indigo-600 text-white py-1 px-1 rounded-md shadow hover:bg-indigo-700">Buy Now></a>
+              </form>
+              <form action="/cart/add/<%= product._id %>" method="post">
+                <button class="w-auto h-12 text-sm bg-green-600 text-white py-1 px-1 rounded-md shadow hover:bg-green-700">Add to cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <% }) %>
+        
+
+      <!-- Add more product items as needed... -->
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow-md py-6">
+    <div class="container mx-auto text-center">
+      <p class="text-gray-600">&copy; 2024 Your E-Commerce Website</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Product</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Main container -->
+  <div class="flex justify-center items-center h-screen">
+    <div class="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create a Product</h2>
+
+      <!-- Product Form -->
+      <form action="/createProduct" method="POST" class="space-y-4" enctype="multipart/form-data">
+        
+        <!-- Product Name -->
+        <div>
+          <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
+          <input type="file" id="image" name="image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter product imageUrl" required>
+        </div>
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+          <input type="text" id="name" name="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter product name" required>
+        </div>
+        
+        <!-- Product Price -->
+        <div>
+          <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+          <input type="number" id="price" name="price" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter product price" required>
+        </div>
+
+        <!-- Product Description -->
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+          <textarea id="description" name="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Enter product description" rows="4" required></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Create Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
