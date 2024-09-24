@@ -3,81 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Products | E-Commerce</title>
+  <title>ShopEase</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
     rel="stylesheet"
-/>
+  />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
   
   <!-- Navbar -->
-  <nav class="bg-white h-10 shadow-md py-4">
+  <nav class="bg-indigo-600 text-white shadow-lg py-4">
     <div class="container mx-auto flex justify-between items-center px-6">
       <!-- Website Logo -->
       <div class="flex items-center">
-        <img src="../logo.jpg" alt="Website Logo" class="h-10 w-10">
-        <span class="text-2xl font-semibold text-gray-800 ml-2">Apna store</span>
+        <img src="../logo.jpg" alt="Apna Store Logo" class="h-10 w-10 rounded-full border-2 border-white">
+        <span class="text-2xl font-bold ml-2">ShopEase</span>
       </div>
 
       <!-- My Cart and Profile Buttons -->
-      <div class="flex items-center">
-        <a href="/cart" class="bg-indigo-600 h-8 text-sm text-white py-1 px-1 rounded-md shadow hover:bg-indigo-700">My Cart</a>
-        <a href="/profile" class="ml-4">
-            <i class="ri-account-circle-fill"></i> 
+      <div class="flex items-center space-x-6">
+        <a href="/cart" class="bg-white text-indigo-600 hover:bg-indigo-100 transition duration-300 py-2 px-4 rounded-full text-sm font-medium">
+          <i class="ri-shopping-cart-2-line mr-2"></i>My Cart
         </a>
-        <a href="/logout" class="ml-4 text-sm text-red-400">Logout</a>
+        <a href="/profile" class="hover:text-indigo-200 transition duration-300">
+          <i class="ri-account-circle-fill text-2xl"></i>
+        </a>
+        <a href="/logout" class="hover:text-red-300 transition duration-300 text-sm font-medium">Logout</a>
       </div>
     </div>
   </nav>
 
   <!-- Header -->
-  <header class="bg-white shadow-md py-4">
+  <header class="bg-indigo-700 text-white py-12">
     <div class="container mx-auto px-6 text-center">
-      <h1 class="text-3xl font-bold text-gray-800"></h1>
+      <h1 class="text-4xl font-bold">Welcome to ShopEase</h1>
+      <p class="mt-4 text-xl">Discover amazing products at unbeatable prices!</p>
     </div>
   </header>
 
   <!-- Product List -->
-  <div class="container mx-auto px-6 py-10">
+  <div class="container mx-auto px-6 py-16">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       
-      <!-- Product Item 1 -->
-      
-         <% products.forEach(function(product){ %>
-
-        <div class="bg-white shadow-md rounded-lg overflow-hidden">
-          <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="Product 1" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h3 class="text-lg font-semibold text-gray-800"><%= product.name %></h3>
-            <p class="text-sm text-gray-600 mt-1"><%= product.description %></p>
-            <div class="mt-2">
-              <span class="text-indigo-600 font-bold text-lg">$<%= product.price %></span>
-            </div>
-            <div class="mt-4 flex space-x-4">
-              <form action="" method="post">
-                 <a href="/shop" class="w-auto h-12 text-sm bg-indigo-600 text-white py-1 px-1 rounded-md shadow hover:bg-indigo-700">Buy Now></a>
-              </form>
-              <form action="/cart/add/<%= product._id %>" method="post">
-                <button class="w-auto h-12 text-sm bg-green-600 text-white py-1 px-1 rounded-md shadow hover:bg-green-700">Add to cart</button>
+      <% products.forEach(function(product){ %>
+      <div class="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:shadow-xl">
+        <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>" class="w-full h-56 object-cover">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-800"><%= product.name %></h3>
+          <p class="text-sm text-gray-600 mt-2"><%= product.description %></p>
+          <div class="mt-4 flex justify-between items-center">
+            <span class="text-indigo-600 font-bold text-2xl">$<%= product.price %></span>
+            <div class="space-x-2">
+              <a href="/shop" class="bg-indigo-600 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-indigo-700 transition duration-300">Buy Now</a>
+              <form action="/cart/add/<%= product._id %>" method="post" class="inline">
+                <button class="bg-green-500 text-white py-2 px-4 rounded-full text-sm font-medium hover:bg-green-600 transition duration-300">Add to Cart</button>
               </form>
             </div>
           </div>
         </div>
-        
-        <% }) %>
-        
-
-      <!-- Add more product items as needed... -->
+      </div>
+      
+      <% }) %>
 
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-white shadow-md py-6">
+  <footer class="bg-indigo-800 text-white py-8">
     <div class="container mx-auto text-center">
-      <p class="text-gray-600">&copy; 2024 Your E-Commerce Website</p>
+      <p>&copy; 2024 Apna Store. All rights reserved.</p>
+      <div class="mt-4 space-x-4">
+        <a href="#" class="hover:text-indigo-300 transition duration-300">About Us</a>
+        <a href="#" class="hover:text-indigo-300 transition duration-300">Contact</a>
+        <a href="#" class="hover:text-indigo-300 transition duration-300">Privacy Policy</a>
+      </div>
     </div>
   </footer>
 

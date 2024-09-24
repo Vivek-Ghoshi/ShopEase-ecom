@@ -3,78 +3,174 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cart</title>
+  <title>Your Cart | ShopEase</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient {
+      background: linear-gradient(270deg, #3b82f6, #60a5fa, #93c5fd);
+      background-size: 200% 200%;
+      animation: gradient 3s ease infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .bg-custom {
+      background-color: #1e293b;
+    }
+    @keyframes textShine {
+      to {
+        background-position: 200% center;
+      }
+    }
+    .animate-gradient-text {
+      background: linear-gradient(to right, #ffffff, #93c5fd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      background-size: 200% auto;
+      animation: textShine 3s linear infinite;
+    }
+    .animate-gradient-bg {
+      background: linear-gradient(-45deg, #1e40af, #3b82f6, #60a5fa, #93c5fd);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+    .hover-scale {
+      transition: transform 0.3s ease;
+    }
+    .hover-scale:hover {
+      transform: scale(1.05);
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body class="bg-gray-100">
+  <!-- Header -->
+  <header class="animate-gradient-bg text-white shadow-lg">
+    <div class="container mx-auto px-6 py-4">
+      <div class="flex justify-between items-center">
+        <a href="/" class="text-3xl font-extrabold hover-scale">
+          <span class="animate-gradient-text">Shop</span>
+          <span class="text-white">Ease</span>
+        </a>
+        <div class="flex items-center space-x-4">
+          <a href="/profile" class="bg-white text-blue-600 hover:bg-blue-100 transition duration-300 py-2 px-4 rounded-full text-sm font-medium hover-scale animate-fade-in">
+            Back to Shop
+          </a>
+          <a href="/profile" class="hover:text-blue-300 transition duration-300 hover-scale animate-fade-in" style="animation-delay: 0.1s;">
+            <i class="fas fa-user-circle text-xl"></i>
+          </a>
+          <a href="/logout" class="hover:text-blue-300 transition duration-300 hover-scale animate-fade-in" style="animation-delay: 0.2s;">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cart Title -->
+  <div class="bg-custom text-white py-8">
+    <div class="container mx-auto px-6">
+      <h1 class="text-4xl font-bold text-center">Your Shopping Cart</h1>
+    </div>
+  </div>
 
   <!-- Cart Container -->
-  <div class="container mx-auto mt-10">
-    <h1 class="text-3xl font-bold text-center mb-10">Your Shopping Cart</h1>
+  <div class="container mx-auto mt-10 px-4">
+    <h1 class="text-3xl font-bold text-center mb-10 text-blue-800">Your Shopping Cart</h1>
+    
     <!-- Cart Items List -->
-    <div class="bg-white shadow-lg rounded-lg p-6">
-      <table class="min-w-full table-auto">
-        <thead>
-          <tr class="text-left font-bold text-gray-700">
-            <th class="px-4 py-2">Product</th>
-            <th class="px-4 py-2">Quantity</th>
-            <th class="px-4 py-2">Price</th>
-            <th class="px-4 py-2">Total</th>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Sample Product Row -->
-          
-            
-           <% user.cart.forEach(function(item){%>
-
-            <tr class="border-b border-gray-200">
-              <!-- Product Image and Name -->
-              <td class="px-4 py-4 flex items-center space-x-4">
-                <img class="w-20 h-20 rounded-md object-cover" src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="product Image">
-                <span class="text-lg font-medium text-gray-800"><%= item.name %></span>
-              </td>
-              
-              <!-- Quantity Control -->
-              <td class="px-4 py-4">
-                <div class="flex items-center space-x-2">
-                  <button class="px-2 py-1 bg-gray-300 rounded">-</button>
-                  <span class="text-lg font-semibold text-gray-700">1</span>
-                  <button class="px-2 py-1 bg-gray-300 rounded">+</button>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% user.cart.forEach(function(item){ %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-20 w-20">
+                    <img class="h-20 w-20 rounded-md object-cover" src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="<%= item.name %>">
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900"><%= item.name %></div>
+                  </div>
                 </div>
               </td>
-  
-              <!-- Product Price -->
-              <td class="px-4 py-4 text-lg font-semibold text-gray-800"><%= item.price %></td>
-  
-              <!-- Total Price for Product -->
-              <td class="px-4 py-4 text-lg font-semibold text-gray-800"><%= item.price %></td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center space-x-2">
+                  <button class="px-2 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                    <i class="fas fa-minus text-xs"></i>
+                  </button>
+                  <span class="text-sm font-semibold text-gray-700">1</span>
+                  <button class="px-2 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                    <i class="fas fa-plus text-xs"></i>
+                  </button>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">$<%= item.price %></div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-semibold text-gray-900">$<%= item.price %></div>
+              </td>
             </tr>
-          <% })%>
-  
-          
-
-          <!-- Add more product rows here if needed -->
+          <% }) %>
         </tbody>
       </table>
 
       <!-- Total Price and Buy Now Button -->
-      <div class="mt-6 flex justify-between items-center">
-        <div class="text-xl font-bold text-gray-800"></div>
-
-        <!-- Buy Now Button -->
-         <a href="/order" class="px-8 py-3 bg-blue-500 text-white text-lg font-semibold rounded hover:bg-blue-600 transition"> Buy Now</a>
-      
+      <div class="px-6 py-4 bg-gray-50">
+        <div class="flex justify-between items-center">
+          <div class="text-xl font-bold text-gray-800">
+            Total: $<%= user.cart.reduce((total, item) => total + item.price, 0).toFixed(2) %>
+          </div>
+          <a href="/order" class="px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition duration-300 inline-flex items-center">
+            <i class="fas fa-shopping-cart mr-2"></i> Proceed to Checkout
+          </a>
+        </div>
       </div>
     </div>
 
-    <!-- If Cart is Empty (Just a UI for now) -->
-    <div class="text-center mt-10">
-      
-      <a href="/profile" class="mt-5 inline-block px-5 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">Continue Shopping</a>
-    </div>
+    <!-- If Cart is Empty -->
+    <% if (user.cart.length === 0) { %>
+      <div class="text-center mt-10">
+        <p class="text-xl text-gray-600 mb-4">Your cart is empty</p>
+        <a href="/profile" class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300">
+          Continue Shopping
+        </a>
+      </div>
+    <% } %>
 
   </div>
+
+  <!-- Footer -->
+  <footer class="bg-custom text-white mt-20">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <p>&copy; 2024 ShopEase. All rights reserved.</p>
+      <div class="flex space-x-4">
+        <a href="#" class="hover:text-blue-300">Terms</a>
+        <a href="#" class="hover:text-blue-300">Privacy</a>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
