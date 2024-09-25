@@ -16,6 +16,10 @@ const ProductSchema = mongoose.Schema({
     description: {
       type: String,
       required: true,
+    },
+    vendor:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:'User'
     }
   }, {
     timestamps: true  

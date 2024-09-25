@@ -8,10 +8,9 @@ const upload = require("./config/multer-config");
 
 const db = require("./config/mongoose-connection");
 const UserModel = require("./models/userSchema");
-// const cartModel = require('./models/cartSchema');
 const productModel = require("./models/productSchema");
 
-const { isLoggedIn } = require("./middlewares/isLoggedIn-middlewere");
+const { isLoggedIn, isVendor } = require("./middlewares/isLoggedIn-middlewere");
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -22,26 +21,39 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", function (req, res) {
   res.render("register");
 });
+
 app.get("/login", function (req, res) {
   res.render("login");
 });
-app.get("/profile", isLoggedIn, async function (req, res) {
-  let products = await productModel.find({});
 
-  res.render("profile", { products });
+app.get("/profile", isLoggedIn, isVendor, async function (req, res) {
+  try {
+    const user = await UserModel.findOne({ email: req.user.email });
+    const products = await productModel.find({ vendor: req.user.userId });
+    res.render("profile", { user, products });
+  } catch (err) {
+    res.send(err);
+  }
 });
+
+app.get("/shop", isLoggedIn, async function (req, res) {
+
+  let products = await productModel.find({});
+  res.render("shop", { products });
+});
+
 app.get("/cart", isLoggedIn, async function (req, res) {
   try {
     let user = await UserModel.findOne({ email: req.user.email }).populate(
       "cart"
     );
-
     res.render("cart", { user });
   } catch (err) {
     res.send(err);
   }
 });
-app.get("/createProduct", isLoggedIn, function (req, res) {
+
+app.get("/createProduct", isLoggedIn, isVendor, function (req, res) {
   res.render("createProduct");
 });
 
@@ -50,19 +62,45 @@ app.get("/order", isLoggedIn, function (req, res) {
 });
 
 app.post(
+  "/edit/profile",
+  isLoggedIn,
+  upload.single("profilePicture"),
+  isVendor,
+  async function (req, res) {
+    try {
+      let user = await UserModel.findOneAndUpdate(
+        { email: req.user.email },
+        {
+          username: req.body.username,
+          bio: req.body.bio,
+          profilePicture: req.file.buffer,
+        }
+      );
+      await user.save();
+      res.redirect("/profile");
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+);
+
+app.post(
   "/createProduct",
   upload.single("image"),
   isLoggedIn,
+  isVendor,
   async function (req, res) {
     let { name, price, description } = req.body;
+    const vendorId = req.user.userId;
 
     let products = await productModel.create({
       image: req.file.buffer,
       name,
       price,
       description,
+      vendor: vendorId,
     });
-    res.redirect("/profile");
+    res.redirect("/shop");
   }
 );
 
@@ -102,7 +140,7 @@ app.post("/register", async function (req, res) {
         if (accountType === "vendor") {
           return res.redirect("/createProduct");
         } else {
-          return res.redirect("/profile");
+          return res.redirect("/shop");
         }
       });
     });
@@ -123,7 +161,7 @@ app.post("/login", async function (req, res) {
         res.cookie("token", token);
         if (user.accountType == "vendor") {
           return res.redirect("/createProduct");
-        } else return res.redirect("/profile");
+        } else return res.redirect("/shop");
       } else {
         res.status(501).send("something went wrong").res.redirect("/login");
       }
@@ -132,8 +170,6 @@ app.post("/login", async function (req, res) {
     res.send(err);
   }
 });
-
-// login route ko handle karna h pehle dono accounts ke liye
 
 app.get("/logout", function (req, res) {
   res.cookie("token", "");
