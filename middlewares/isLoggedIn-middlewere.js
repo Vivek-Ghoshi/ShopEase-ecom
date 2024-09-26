@@ -29,3 +29,13 @@ module.exports.isVendor = async (req, res, next) => {
    console.log('error.message')
   }
 };
+
+module.exports.isUser = async (req, res, next) => {
+  try {
+    const user = await UserModel.findOne({email: req.user.email});
+    if(user.accountType === 'user') return next();
+    else return res.send('you are not a user')
+  } catch (error) {
+   console.log('error.message')
+  }
+};

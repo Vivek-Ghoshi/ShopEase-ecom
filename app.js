@@ -10,7 +10,7 @@ const db = require("./config/mongoose-connection");
 const UserModel = require("./models/userSchema");
 const productModel = require("./models/productSchema");
 
-const { isLoggedIn, isVendor } = require("./middlewares/isLoggedIn-middlewere");
+const { isLoggedIn, isVendor, isUser } = require("./middlewares/isLoggedIn-middlewere");
 
 app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -42,7 +42,7 @@ app.get("/shop", isLoggedIn, async function (req, res) {
   res.render("shop", { products });
 });
 
-app.get("/cart", isLoggedIn, async function (req, res) {
+app.get("/cart", isLoggedIn,isUser, async function (req, res) {
   try {
     let user = await UserModel.findOne({ email: req.user.email }).populate(
       "cart"
@@ -57,7 +57,7 @@ app.get("/createProduct", isLoggedIn, isVendor, function (req, res) {
   res.render("createProduct");
 });
 
-app.get("/order", isLoggedIn, function (req, res) {
+app.get("/order", isLoggedIn,isUser, function (req, res) {
   res.render("order");
 });
 
@@ -104,7 +104,7 @@ app.post(
   }
 );
 
-app.post("/cart/add/:productId", isLoggedIn, async function (req, res) {
+app.post("/cart/add/:productId", isLoggedIn,isUser, async function (req, res) {
   try {
     let user = await UserModel.findOne({ email: req.user.email });
     user.cart.push(req.params.productId);
