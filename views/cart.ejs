@@ -82,7 +82,7 @@
   <!-- Cart Title -->
   <div class="bg-custom text-white py-8">
     <div class="container mx-auto px-6">
-      <h1 class="text-4xl font-bold text-center">Your Shopping Cart</h1>
+      <h1 class="text-4xl animate-gradient-text font-bold text-yellow-500 text-center">All Products Will Appear Here</h1>
     </div>
   </div>
 
@@ -116,11 +116,11 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center space-x-2">
-                  <button class="px-2 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                  <button onclick="updateQuantity('decrease', '<%= item.id %>', <%= item.price %>)" class="px-2 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition">
                     <i class="fas fa-minus text-xs"></i>
                   </button>
-                  <span class="text-sm font-semibold text-gray-700">1</span>
-                  <button class="px-2 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition">
+                  <span id="quantity-<%= item.id %>" class="quantity text-sm font-semibold text-gray-700"><%= item.quantity || 1 %></span>
+                  <button onclick="updateQuantity('increase', '<%= item.id %>', <%= item.price %>)" class="px-2 py-1 bg-gray-200 rounded-full hover:bg-gray-300 transition">
                     <i class="fas fa-plus text-xs"></i>
                   </button>
                 </div>
@@ -129,7 +129,7 @@
                 <div class="text-sm text-gray-900">$<%= item.price %></div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <div class="text-sm font-semibold text-gray-900">$<%= item.price %></div>
+                <div id="total-<%= item.id %>" class="text-sm font-semibold text-gray-900">$<%= (item.price * (item.quantity || 1)).toFixed(2) %></div>
               </td>
             </tr>
           <% }) %>
@@ -140,7 +140,7 @@
       <div class="px-6 py-4 bg-gray-50">
         <div class="flex justify-between items-center">
           <div class="text-xl font-bold text-gray-800">
-            Total: $<%= user.cart.reduce((total, item) => total + item.price, 0).toFixed(2) %>
+            Total: $<span id="cart-total"><%= user.cart.reduce((total, item) => total + item.price * (item.quantity || 1), 0).toFixed(2) %></span>
           </div>
           <a href="/order" class="px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition duration-300 inline-flex items-center">
             <i class="fas fa-shopping-cart mr-2"></i> Proceed to Checkout
@@ -171,6 +171,57 @@
       </div>
     </div>
   </footer>
+<script>
+  function updateQuantity(action, itemId, itemPrice) {
+    const quantityElement = document.getElementById(`quantity-${itemId}`);
+    const totalElement = document.getElementById(`total-${itemId}`);
+    const cartTotalElement = document.getElementById('cart-total');
+    
+    let currentQuantity = parseInt(quantityElement.innerText) || 1;
+    
+    if (action === 'increase') {
+      currentQuantity++;
+    } else if (action === 'decrease' && currentQuantity > 1) {
+      currentQuantity--;
+    }
+    
+    quantityElement.innerText = currentQuantity;
+    
+    // Update item total
+    const itemTotal = (currentQuantity * itemPrice).toFixed(2);
+    totalElement.innerText = `$${itemTotal}`;
+    
+    // Update cart total
+    updateCartTotal();
+    
+    // You may want to add an AJAX call here to update the server-side cart
+    // updateServerCart(itemId, currentQuantity);
+  }
 
+  function updateCartTotal() {
+    const itemTotals = document.querySelectorAll('[id^="total-"]');
+    let cartTotal = 0;
+    itemTotals.forEach(item => {
+      cartTotal += parseFloat(item.innerText.replace('$', ''));
+    });
+    document.getElementById('cart-total').innerText = cartTotal.toFixed(2);
+  }
+
+  // Example function to update server-side cart (you'll need to implement this)
+  // function updateServerCart(itemId, newQuantity) {
+  //   fetch('/update-cart', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ itemId, quantity: newQuantity }),
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     // Handle the response, maybe update the total price
+  //   })
+  //   .catch(error => console.error('Error:', error));
+  // }
+</script>
 </body>
 </html>

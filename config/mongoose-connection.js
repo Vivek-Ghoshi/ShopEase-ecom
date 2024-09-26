@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://127.0.0.1:27017/CodeSoftProject")
+mongoose.connect("mongodb://127.0.0.1:27017/codeAlphaEcom")
 .then(function(){
     console.log('connected to mongoose')
 })
