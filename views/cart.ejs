@@ -237,16 +237,10 @@
       }
 
       quantityElement.innerText = currentQuantity;
-
-      // Update item total
       const itemTotal = (currentQuantity * itemPrice).toFixed(2);
-      totalElement.innerText = `$${itemTotal}`;
-
-      // Update cart total
+      totalElement.innerText = `$${itemTotal}`; 
       updateCartTotal();
 
-      // You may want to add an AJAX call here to update the server-side cart
-      // updateServerCart(itemId, currentQuantity);
     }
 
     function updateCartTotal() {
@@ -258,21 +252,8 @@
       document.getElementById('cart-total').innerText = cartTotal.toFixed(2);
     }
 
-    // Example function to update server-side cart (you'll need to implement this)
-    // function updateServerCart(itemId, newQuantity) {
-    //   fetch('/update-cart', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ itemId, quantity: newQuantity }),
-    //   })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     // Handle the response, maybe update the total price
-    //   })
-    //   .catch(error => console.error('Error:', error));
-    // }
+    
+    
   </script>
 </body>
 

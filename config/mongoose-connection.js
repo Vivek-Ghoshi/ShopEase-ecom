@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
- const mongoURI = "mongodb+srv: vivek_ghoshi01:<vi12ve23>@deplyment.kulph.mongodb.net/?retryWrites=true&w=majority&appName=deplyment"
-mongoose.connect(mongoURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+ const mongoURI = "mongodb://127.0.0.1:27017/shopEase"
+mongoose.connect(mongoURI)
 .then(function(){
     console.log('connected to mongoose')
 })
