@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
- const mongoURI = "mongodb://127.0.0.1:27017/shopEase"
-mongoose.connect(mongoURI)
+ const mongoURI = "mongodb+srv://thakursaabg01:<Vi12ve23>@shopease.s0h7l.mongodb.net/"
+ 
+mongoose.connect(mongoURI,{
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
 .then(function(){
     console.log('connected to mongoose')
+    
 })
 .catch(function(err){
 console.log(err)
