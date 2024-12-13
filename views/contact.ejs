@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-in forwards',
+                        'slide-in': 'slideIn 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { 
+                                opacity: '0',
+                                transform: 'translateY(20px)'
+                            },
+                            '100%': { 
+                                opacity: '1',
+                                transform: 'translateY(0)'
+                            },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .form-input:focus ~ label,
+        .form-input:not(:placeholder-shown) ~ label {
+            transform: translateY(-1.5rem) scale(0.75);
+            color: #1e90ff;
+        }
+    </style>
+</head>
+<body class="bg-blue-50 min-h-screen flex flex-col items-center justify-center p-4">
+    <button class="bg-white mb-4 text-blue-600 px-8 py-3 rounded-full font-bold    hover:bg-blue-50 transition-colors duration-300">
+        <a href="/shop">Back to Shop</a> 
+     </button>
+    <div class="container max-w-6xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 flex flex-wrap gap-12 animate-fade-in">
+            <!-- Contact Information -->
+            <div class="flex-1 min-w-[300px]">
+                <h1 class="text-4xl font-bold text-blue-500 mb-8">Get in Touch</h1>
+                
+                <!-- Contact Details -->
+                <div class="space-y-6">
+                    <div class="flex items-center p-4 bg-gray-50 rounded-lg transition-all duration-300 hover:translate-x-2 hover:bg-blue-50 animate-slide-in">
+                        <i class="fas fa-envelope text-2xl text-blue-500 mr-4"></i>
+                        <p>contact@ShopEase.com</p>
+                    </div>
+                    
+                    <div class="flex items-center p-4 bg-gray-50 rounded-lg transition-all duration-300 hover:translate-x-2 hover:bg-blue-50 animate-slide-in delay-100">
+                        <i class="fas fa-phone text-2xl text-blue-500 mr-4"></i>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                    
+                    <div class="flex items-center p-4 bg-gray-50 rounded-lg transition-all duration-300 hover:translate-x-2 hover:bg-blue-50 animate-slide-in delay-200">
+                        <i class="fas fa-location-dot text-2xl text-blue-500 mr-4"></i>
+                        <div>
+                            <p>123 Indrapuri</p>
+                            <p>Bhopal, MP 462021</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="flex-1 min-w-[300px]">
+                <form class="space-y-6">
+                    <!-- Name Input -->
+                    <div class="relative animate-slide-in">
+                        <input type="text" 
+                               placeholder=" "
+                               class="form-input w-full px-3 py-3 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors duration-300 bg-transparent peer"
+                               required>
+                        <label class="absolute left-3 top-3 text-gray-500 transition-all duration-300 pointer-events-none">
+                            Your Name
+                        </label>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="relative animate-slide-in delay-100">
+                        <input type="email" 
+                               placeholder=" "
+                               class="form-input w-full px-3 py-3 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors duration-300 bg-transparent"
+                               required>
+                        <label class="absolute left-3 top-3 text-gray-500 transition-all duration-300 pointer-events-none">
+                            Your Email
+                        </label>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="relative animate-slide-in delay-200">
+                        <textarea placeholder=" "
+                                  rows="4"
+                                  class="form-input w-full px-3 py-3 border-b-2 border-gray-300 focus:border-blue-500 outline-none transition-colors duration-300 bg-transparent resize-y"
+                                  required></textarea>
+                        <label class="absolute left-3 top-3 text-gray-500 transition-all duration-300 pointer-events-none">
+                            Your Message
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                            class="group flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full transition-all duration-300 hover:-translate-y-1 animate-slide-in delay-300">
+                        Send Message
+                        <i class="fas fa-paper-plane transition-transform duration-300 group-hover:translate-x-1"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

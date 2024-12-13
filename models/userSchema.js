@@ -2,16 +2,29 @@ const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema(
   {
-    username: {
+    email: {
       type: String,
-      required: true,
+      required: function() {
+        return !this.googleId;
     },
+      unique: true,
+  },
+  password: {
+      type: String,
+      required: function() {
+          return !this.googleId;
+      },
+  },
+  googleId: {
+      type: String, 
+      required: false,
+  },
     name: {
       type: String,
     },
-    email: {
+    username: {
       type: String,
-      required: true,
+     
     },
     profilePicture: {
       type: Buffer,
@@ -21,10 +34,6 @@ const UserSchema = mongoose.Schema(
     },
     bio:{
       type: String,
-    },
-    password: {
-      type: String,
-      required: true,
     },
     cart: [
       {
@@ -43,25 +52,11 @@ const UserSchema = mongoose.Schema(
     }],
     orders: [
       {
-        products: [
-          {
-            productId: {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: "Product",
-            },
-            quantity: {
-              type: Number,
-            },
-          },
-        ],
-        orderDate: {
-          type: Date,
-          default: Date.now,
-        },
-        totalPrice: {
-          type: Number,
-        },
-      },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        Date: Date.now()
+     }
+      
     ],
   },
   {

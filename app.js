@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const upload = require("./config/multer-config");
 
+
 const db = require("./config/mongoose-connection");
 const UserModel = require("./models/userSchema");
 const productModel = require("./models/productSchema");
@@ -26,10 +27,25 @@ app.get("/login", function (req, res) {
   res.render("login");
 });
 
-app.get("/profile", isLoggedIn, isVendor, async function (req, res) {
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/shop",
+    failureRedirect: "/",
+  })
+);
+
+app.get("/profile", isLoggedIn, async function (req, res) {
   try {
-    const user = await UserModel.findOne({ email: req.user.email });
-    const products = await productModel.find({ vendor: req.user.userId });
+    const user = await UserModel.findOne({ email: req.user.email }).populate('orders');
+    const products = req.user.role === 'vendor' ? await productModel.find({ vendor: req.user.userId }) : [];
     res.render("profile", { user, products });
   } catch (err) {
     res.send(err);
@@ -37,9 +53,10 @@ app.get("/profile", isLoggedIn, isVendor, async function (req, res) {
 });
 
 app.get("/shop", isLoggedIn, async function (req, res) {
-
+  
+  const user = await UserModel.findOne({email : req.user.email})
   let products = await productModel.find({});
-  res.render("shop", { products });
+  res.render("shop", { products,user });
 });
 
 app.get("/cart", isLoggedIn,isUser, async function (req, res) {
@@ -57,15 +74,31 @@ app.get("/createProduct", isLoggedIn, isVendor, function (req, res) {
   res.render("createProduct");
 });
 
-app.get("/order", isLoggedIn,isUser, function (req, res) {
-  res.render("order");
+app.get("/order/:productId", isLoggedIn,isUser,async function (req, res) {
+
+  try {
+    const productId = req.params.productId;
+    const email = req.user.email;
+    const user = await UserModel.findOne({email});
+    if(!user.orders.includes(productId)){
+      user.orders.push(productId)
+     await user.save();
+  
+    }
+    res.render("order");
+  
+
+  } catch (error) {
+    console.log(error.message)
+  }
+ 
 });
 
 app.post(
   "/edit/profile",
   isLoggedIn,
   upload.single("profilePicture"),
-  isVendor,
+  
   async function (req, res) {
     try {
       let user = await UserModel.findOneAndUpdate(
@@ -114,6 +147,26 @@ app.post("/cart/add/:productId", isLoggedIn,isUser, async function (req, res) {
     res.send(err);
   }
 });
+
+app.get("/search", async (req, res) => {
+  try {
+    const query = req.query.q; // Get the search term from the query string
+    if (!query) {
+      return res.status(400).json({ success: false, message: "Search query is required." });
+    }
+
+    // Perform a search in the database (e.g., by product name or description)
+    const products = await productModel.find({
+      name: { $regex: query, $options: "i" }, // Case-insensitive search
+    });
+
+    res.status(200).json({ success: true, products });
+  } catch (err) {
+    console.error("Error fetching search results:", err);
+    res.status(500).json({ success: false, message: "Internal server error." });
+  }
+});
+
 
 app.post("/register", async function (req, res) {
   try {
@@ -169,6 +222,14 @@ app.post("/login", async function (req, res) {
   } catch (err) {
     res.send(err);
   }
+});
+
+app.get("/about",function(req,res){
+  res.render('about')
+});
+
+app.get("/contact",function(req,res){
+  res.render('contact')
 });
 
 app.get("/logout", function (req, res) {
