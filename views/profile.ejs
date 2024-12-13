@@ -69,12 +69,12 @@
                 <button type="button" id="cancelEditBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition ml-2">Cancel</button>
             </form>
         </div>
+        
     <% if(user.accountType === 'vendor'){%>
-
         <h3 class="text-2xl font-bold mb-4">Your Products</h3>
-        <% if(products.length > 0){ %>
+        <% if(user.products.length > 0){ %>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <% products.forEach(function(product){ %>
+                <% user.products.forEach(function(product){ %>
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
                     <img src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %>" class="w-full h-48 object-cover">
                     <div class="p-4">

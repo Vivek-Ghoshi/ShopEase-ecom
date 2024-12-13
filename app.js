@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const upload = require("./config/multer-config");
 
-
 const db = require("./config/mongoose-connection");
 const UserModel = require("./models/userSchema");
 const productModel = require("./models/productSchema");
@@ -27,25 +26,10 @@ app.get("/login", function (req, res) {
   res.render("login");
 });
 
-app.get(
-  "/auth/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-  })
-);
-
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/shop",
-    failureRedirect: "/",
-  })
-);
-
 app.get("/profile", isLoggedIn, async function (req, res) {
   try {
-    const user = await UserModel.findOne({ email: req.user.email }).populate('orders');
-    const products = req.user.role === 'vendor' ? await productModel.find({ vendor: req.user.userId }) : [];
+    const user = await UserModel.findOne({ email: req.user.email }).populate('orders').populate('products');
+    const products = req.user.accountType === 'vendor' ? await productModel.find({ vendor: req.user.userId }) : [];
     res.render("profile", { user, products });
   } catch (err) {
     res.send(err);
@@ -93,6 +77,9 @@ app.get("/order/:productId", isLoggedIn,isUser,async function (req, res) {
   }
  
 });
+app.get('/order',function(req,res){
+  res.render('order')
+})
 
 app.post(
   "/edit/profile",
@@ -125,7 +112,7 @@ app.post(
   async function (req, res) {
     let { name, price, description } = req.body;
     const vendorId = req.user.userId;
-
+    const user = await UserModel.findOne({email: req.user.email})
     let products = await productModel.create({
       image: req.file.buffer,
       name,
@@ -133,6 +120,8 @@ app.post(
       description,
       vendor: vendorId,
     });
+    user.products.push(products._id)
+    await user.save()
     res.redirect("/shop");
   }
 );
@@ -150,14 +139,14 @@ app.post("/cart/add/:productId", isLoggedIn,isUser, async function (req, res) {
 
 app.get("/search", async (req, res) => {
   try {
-    const query = req.query.q; // Get the search term from the query string
+    const query = req.query.q; 
     if (!query) {
       return res.status(400).json({ success: false, message: "Search query is required." });
     }
 
-    // Perform a search in the database (e.g., by product name or description)
+    
     const products = await productModel.find({
-      name: { $regex: query, $options: "i" }, // Case-insensitive search
+      name: { $regex: query, $options: "i" }, 
     });
 
     res.status(200).json({ success: true, products });
